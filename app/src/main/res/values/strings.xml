@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Ebike_BT</string>
+    <string name="disconnect">disconnect</string>
+    <string name="theme">theme</string>
+    <string name="bt_devices">bt devices</string>
+    <string name="configuration">configuration</string>
+    <string name="bluetooth">Bluetooth</string>
+    <string name="back">Back</string>
+    <string name="gps">GPS</string>
+    <string name="paired_devices">Paired devices</string>
+    <string name="auto_connect">Auto connect to device</string>
+
+    <!-- Bluetooth -->
+    <string name="title_connected">connected</string>
+    <string name="title_not_connected">not connected</string>
+
+</resources>
