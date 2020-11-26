@@ -7,6 +7,20 @@
     tools:context=".MainActivity"
     >
 
+    <TextView
+        android:id="@+id/id_text_speed"
+        android:layout_width="190dp"
+        android:layout_height="179dp"
+        android:layout_marginStart="110dp"
+        android:layout_marginTop="54dp"
+        android:background="#00FFFFFF"
+        android:gravity="bottom|center"
+        android:text="@string/default_kmh"
+        android:textColor="#8E8E8E"
+        android:textSize="160sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/id_watts2" />
+
     <include
         layout="@layout/tool_bar"
         android:layout_width="match_parent"
@@ -15,6 +29,105 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/id_text_volts3"
+        android:layout_width="60dp"
+        android:layout_height="25dp"
+        android:foregroundGravity="center"
+        android:gravity="center|center_vertical"
+        android:text="@string/default_voltaje"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/id_battery_bar2"
+        app:layout_constraintTop_toTopOf="@+id/id_battery_bar2" />
+
+    <TextView
+        android:id="@+id/id_watts2"
+        android:layout_width="60dp"
+        android:layout_height="25dp"
+        android:gravity="center|center_horizontal|center_vertical"
+        android:text="@string/default_watts"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/id_battery_bar2"
+        app:layout_constraintTop_toBottomOf="@+id/id_amperes2" />
+
+    <TextView
+        android:id="@+id/id_amperes2"
+        android:layout_width="60dp"
+        android:layout_height="25dp"
+        android:gravity="center|center_horizontal|center_vertical"
+        android:text="@string/default_ampers"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/id_battery_bar2"
+        app:layout_constraintTop_toTopOf="@+id/id_battery_bar2" />
+
+    <ProgressBar
+        android:id="@+id/id_battery_bar2"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="116dp"
+        android:max="100"
+        android:minWidth="200dip"
+        android:minHeight="100dip"
+        android:progress="00"
+        android:progressTint="#4CAF50"
+        android:textAlignment="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/id_volt_percent2"
+        android:layout_width="60dp"
+        android:layout_height="25dp"
+        android:gravity="center|center_horizontal|center_vertical"
+        android:text="@string/default_percent"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/id_battery_bar2"
+        app:layout_constraintTop_toBottomOf="@+id/id_text_volts3" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="0dp">
+
+        <ImageButton
+            android:id="@+id/id_light_button"
+            style="@style/Widget.AppCompat.ImageButton"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/boton_lights_off" />
+
+        <ImageButton
+            android:id="@+id/id_throttle"
+            style="@style/Widget.AppCompat.ImageButton"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/button_pedals" />
+
+        <ImageButton
+            android:id="@+id/id_power_selector"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/botton_100" />
+
+        <ToggleButton
+            android:id="@+id/id_toggle_gear"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:textOff="R"
+            android:textOn="D"
+            android:textSize="36sp" />
+
+
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
