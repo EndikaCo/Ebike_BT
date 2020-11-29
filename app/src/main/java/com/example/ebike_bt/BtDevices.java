@@ -5,13 +5,17 @@ import androidx.appcompat.widget.SwitchCompat;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.Context;
 import android.content.Intent;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Set;
@@ -24,7 +28,7 @@ public class BtDevices extends AppCompatActivity {
 
     private ArrayList<String> arrayPairedNames = new ArrayList<>();
     private ArrayList<BluetoothDevice> arrayDevices = new ArrayList<>();
-
+    //LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
     private BluetoothDevice device;
 
     public static String EXTRA_DEVICE_ADDRESS = "device_address"; // EXTRA string send to mainActivity
@@ -33,6 +37,10 @@ public class BtDevices extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bt_devices);
+
+        enableBluetooth();
+        enableGps();
+
 
         bluetoothadapter = BluetoothAdapter.getDefaultAdapter();
         listPairedDevices = findViewById(R.id.id_paired_devices);
@@ -84,4 +92,22 @@ public class BtDevices extends AppCompatActivity {
 finish();
     }
 
+
+    public void enableGps() {
+
+        final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        assert manager != null;
+        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+
+            Intent intent1 = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            startActivity(intent1);
+        }
+    }
+
+    public static void enableBluetooth() {                                                           //method to enable bluetooth
+        BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        if (!mBluetoothAdapter.isEnabled()) {
+            mBluetoothAdapter.enable();
+        }
+    }
 }

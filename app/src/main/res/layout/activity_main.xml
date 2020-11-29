@@ -8,6 +8,64 @@
     >
 
     <TextView
+        android:id="@+id/textView6"
+        android:layout_width="42dp"
+        android:layout_height="21dp"
+        android:layout_marginStart="178dp"
+        android:text="@string/km_h"
+        app:layout_constraintStart_toStartOf="@+id/id_text_speed"
+        app:layout_constraintTop_toTopOf="@+id/id_text_speed" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="190dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="160dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="@+id/id_text_speed"
+        app:layout_constraintTop_toTopOf="@+id/id_text_speed">
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center|center_horizontal|center_vertical"
+            android:text="@string/maximum_speed"
+            android:textSize="14sp"
+            android:textStyle="italic" />
+
+        <TextView
+            android:id="@+id/id_km_max"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="20dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="00"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center|center_horizontal|center_vertical"
+            android:text="@string/average_speed"
+            android:textSize="14sp"
+            android:textStyle="italic" />
+
+        <TextView
+            android:id="@+id/id_km_promedio"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/default_km_average"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+    <TextView
         android:id="@+id/id_text_speed"
         android:layout_width="190dp"
         android:layout_height="179dp"
@@ -19,7 +77,7 @@
         android:textColor="#8E8E8E"
         android:textSize="160sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/id_watts2" />
+        app:layout_constraintTop_toBottomOf="@+id/id_watts" />
 
     <include
         layout="@layout/tool_bar"
@@ -31,42 +89,42 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/id_text_volts3"
+        android:id="@+id/id_text_volts"
         android:layout_width="60dp"
         android:layout_height="25dp"
         android:foregroundGravity="center"
         android:gravity="center|center_vertical"
         android:text="@string/default_voltaje"
         android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/id_battery_bar2"
-        app:layout_constraintTop_toTopOf="@+id/id_battery_bar2" />
+        app:layout_constraintStart_toEndOf="@+id/id_battery_bar"
+        app:layout_constraintTop_toTopOf="@+id/id_battery_bar" />
 
     <TextView
-        android:id="@+id/id_watts2"
+        android:id="@+id/id_watts"
         android:layout_width="60dp"
         android:layout_height="25dp"
         android:gravity="center|center_horizontal|center_vertical"
         android:text="@string/default_watts"
         android:textSize="18sp"
-        app:layout_constraintEnd_toStartOf="@+id/id_battery_bar2"
-        app:layout_constraintTop_toBottomOf="@+id/id_amperes2" />
+        app:layout_constraintEnd_toStartOf="@+id/id_battery_bar"
+        app:layout_constraintTop_toBottomOf="@+id/id_amperes" />
 
     <TextView
-        android:id="@+id/id_amperes2"
+        android:id="@+id/id_amperes"
         android:layout_width="60dp"
         android:layout_height="25dp"
         android:gravity="center|center_horizontal|center_vertical"
         android:text="@string/default_ampers"
         android:textSize="18sp"
-        app:layout_constraintEnd_toStartOf="@+id/id_battery_bar2"
-        app:layout_constraintTop_toTopOf="@+id/id_battery_bar2" />
+        app:layout_constraintEnd_toStartOf="@+id/id_battery_bar"
+        app:layout_constraintTop_toTopOf="@+id/id_battery_bar" />
 
     <ProgressBar
-        android:id="@+id/id_battery_bar2"
+        android:id="@+id/id_battery_bar"
         style="@android:style/Widget.ProgressBar.Horizontal"
         android:layout_width="150dp"
         android:layout_height="50dp"
-        android:layout_marginStart="120dp"
+        android:layout_marginStart="128dp"
         android:layout_marginTop="116dp"
         android:max="100"
         android:minWidth="200dip"
@@ -78,14 +136,14 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/id_volt_percent2"
+        android:id="@+id/id_volt_percent"
         android:layout_width="60dp"
         android:layout_height="25dp"
         android:gravity="center|center_horizontal|center_vertical"
         android:text="@string/default_percent"
         android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/id_battery_bar2"
-        app:layout_constraintTop_toBottomOf="@+id/id_text_volts3" />
+        app:layout_constraintStart_toEndOf="@+id/id_battery_bar"
+        app:layout_constraintTop_toBottomOf="@+id/id_text_volts" />
 
     <LinearLayout
         android:layout_width="match_parent"

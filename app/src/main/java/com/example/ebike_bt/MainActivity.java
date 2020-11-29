@@ -11,11 +11,23 @@ import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Locale;
+
+import static java.lang.Float.parseFloat;
+
 public class MainActivity extends AppCompatActivity {
+
+    //Views
+    TextView tvVoltageBattery, tvPercentBattery, tvWatts, tvAmperes;
+    ProgressBar  batteryProgressBar;
 
     //toolbar
     Toolbar myToolbar;
@@ -33,15 +45,20 @@ public class MainActivity extends AppCompatActivity {
     MyBluetoothService service;
     MyBluetoothService.ConnectThread connect;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
 
-        bluetoothadapter =BluetoothAdapter.getDefaultAdapter();
 
-        myToolbar=findViewById(R.id.id_tool_bar);
+
+
+        findViews();
+
+        bluetoothadapter =BluetoothAdapter.getDefaultAdapter();
 
         setSupportActionBar(myToolbar);
 
@@ -49,11 +66,19 @@ public class MainActivity extends AppCompatActivity {
 
         service = new MyBluetoothService(handler);
 
-        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_UNSPECIFIED){   //light mode if unspecified
+        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_UNSPECIFIED){  //if unspecified light mode
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
     }
 
+    private void findViews() {
+
+        myToolbar=findViewById(R.id.id_tool_bar);
+        tvVoltageBattery =findViewById(R.id.id_text_volts);
+        tvAmperes=findViewById(R.id.id_amperes);
+        tvWatts=findViewById(R.id.id_watts);
+        batteryProgressBar=findViewById(R.id.id_battery_bar);
+    }
 
     @SuppressLint("HandlerLeak")                                                                    //HANDLER
     private void theHandler() {
@@ -80,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
                     case Constants.MESSAGE_DEVICE_NAME:
                         mConnectedDeviceName = msg.getData().getString(Constants.DEVICE_NAME);      // save the connected device's name
                         Toast.makeText(getApplicationContext(), "Connected to "
-                                + mConnectedDeviceName, Toast.LENGTH_SHORT).show();
+                            + mConnectedDeviceName, Toast.LENGTH_SHORT).show();
                         break;
                 }
             }

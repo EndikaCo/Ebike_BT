@@ -17,17 +17,6 @@ public class AppSettings extends AppCompatActivity {
 
     }
 
-    public void enableGps(){
-        Intent intent1 = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-        startActivity(intent1);
-    }
-    public static void enableBluetooth() {                                                           //method to enable bluetooth
-        BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        if (!mBluetoothAdapter.isEnabled()) {
-            mBluetoothAdapter.enable();
-        }
-    }
-
     public void goBack(View v){
         finish();
     }
