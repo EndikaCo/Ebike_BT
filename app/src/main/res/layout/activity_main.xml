@@ -7,6 +7,21 @@
     tools:context=".MainActivity"
     >
 
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/id_chart"
+        android:layout_width="365dp"
+        android:layout_height="226dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/id_text_speed"
+        app:layout_constraintVertical_bias="0.0" />
+
     <TextView
         android:id="@+id/textView6"
         android:layout_width="42dp"
@@ -186,6 +201,26 @@
 
 
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/id_slope"
+        android:layout_width="50dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="112dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/id_text_speed"
+        app:srcCompat="@drawable/angulo_bici" />
+
+    <TextView
+        android:id="@+id/id_pitch"
+        android:layout_width="34dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="4dp"
+        android:text="120º"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/id_slope" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

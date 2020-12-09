@@ -38,16 +38,12 @@ public class BtDevices extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bt_devices);
 
-        enableBluetooth();
-        enableGps();
-
-
         bluetoothadapter = BluetoothAdapter.getDefaultAdapter();
         listPairedDevices = findViewById(R.id.id_paired_devices);
         autoConnectSwitch = findViewById(R.id.id_autoconnect_switch);
 
         getPairedDevices();
-                                                                                                    //click to connect
+        //click to connect
         listPairedDevices.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -75,7 +71,7 @@ public class BtDevices extends AppCompatActivity {
         });
 
     }
-                                                                                                    //paired device add to list
+    //paired device add to list
     private  void getPairedDevices(){
         Set<BluetoothDevice> btBondedDevices= bluetoothadapter.getBondedDevices();
         if (btBondedDevices.size() >0){
@@ -89,25 +85,9 @@ public class BtDevices extends AppCompatActivity {
     }
 
     public void goBack(View v){
-finish();
+        finish();
     }
 
 
-    public void enableGps() {
 
-        final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        assert manager != null;
-        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-
-            Intent intent1 = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-            startActivity(intent1);
-        }
-    }
-
-    public static void enableBluetooth() {                                                           //method to enable bluetooth
-        BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        if (!mBluetoothAdapter.isEnabled()) {
-            mBluetoothAdapter.enable();
-        }
-    }
 }

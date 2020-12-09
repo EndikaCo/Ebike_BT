@@ -17,6 +17,16 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/id_bluetooth_switch"
+        android:layout_width="113dp"
+        android:layout_height="23dp"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="256dp"
+        android:text="@string/bluetooth"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <Button
         android:id="@+id/button"
         android:layout_width="wrap_content"
@@ -27,4 +37,14 @@
         android:text="@string/back"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="94dp"
+        android:text="reset trip"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/id_bluetooth_switch" />
 </androidx.constraintlayout.widget.ConstraintLayout>
