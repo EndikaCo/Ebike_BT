@@ -6,26 +6,54 @@
     android:layout_height="match_parent"
     tools:context=".AppSettings">
 
-    <androidx.appcompat.widget.SwitchCompat
-        android:id="@+id/id_gps_switch"
-        android:layout_width="113dp"
-        android:layout_height="23dp"
-        android:layout_marginStart="52dp"
-        android:layout_marginTop="208dp"
-        android:text="@string/gps"
+
+    <Switch
+        android:id="@+id/id_switch_speedo3"
+        android:layout_width="127dp"
+        android:layout_height="31dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="88dp"
+        android:text="Full screen"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="364dp"
+        android:text="UI"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Switch
+        android:id="@+id/id_switch_light"
+        android:layout_width="127dp"
+        android:layout_height="31dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="3dp"
+        android:text="Static - blink"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/id_gps_switch"
+        android:layout_width="124dp"
+        android:layout_height="27dp"
+        android:layout_marginTop="3dp"
+        android:text="@string/gps"
+        app:layout_constraintStart_toStartOf="@+id/textView8"
+        app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/id_bluetooth_switch"
-        android:layout_width="113dp"
-        android:layout_height="23dp"
-        android:layout_marginStart="52dp"
-        android:layout_marginTop="256dp"
+        android:layout_width="127dp"
+        android:layout_height="27dp"
+        android:layout_marginTop="3dp"
         android:text="@string/bluetooth"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="@+id/id_gps_switch"
+        app:layout_constraintTop_toBottomOf="@+id/id_gps_switch" />
 
     <Button
         android:id="@+id/button"
@@ -42,9 +70,63 @@
         android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="35dp"
-        android:layout_marginTop="94dp"
+        android:layout_marginStart="296dp"
+        android:layout_marginTop="492dp"
         android:text="reset trip"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/id_bluetooth_switch" />
+
+    <Switch
+        android:id="@+id/id_switch_speedo"
+        android:layout_width="127dp"
+        android:layout_height="31dp"
+        android:layout_marginTop="3dp"
+        android:text="GPS   -   hall"
+        app:layout_constraintStart_toStartOf="@+id/textView7"
+        app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="96dp"
+        android:layout_height="41dp"
+        android:layout_marginStart="26dp"
+        android:layout_marginEnd="18dp"
+        android:layout_marginBottom="36dp"
+        android:gravity="center_horizontal"
+        android:text="000 km"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/button2"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="284dp"
+        android:text="Lights"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="196dp"
+        android:text="Speedometre"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="80dp"
+        android:text="Connectivity"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

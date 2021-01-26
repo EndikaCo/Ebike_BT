@@ -11,14 +11,14 @@ public class DataBt extends Activity {
     String filtered;
 
     //Views
-    TextView tvVoltageBattery, tvPercentBattery, tvWatts, tvAmperes;
+    TextView tvVoltageBattery, tvPercentBattery, tvWatts, tvAmperes, tvspeed2,tvAmperesMax, tvWattsMax;
     ProgressBar batteryProgressBar;
 
     Chart chart;
 
     double voltage;
-    double amperes;
-
+    double amperes,maxAmperes, watts,maxWatts;
+    //double speed2;
 
     DataBt(Activity activity) {
 
@@ -27,10 +27,12 @@ public class DataBt extends Activity {
           tvWatts=activity.findViewById(R.id.id_watts);
           batteryProgressBar=activity.findViewById(R.id.id_battery_bar);
           tvPercentBattery=activity.findViewById(R.id.id_volt_percent);
+        //  tvspeed2=activity.findViewById(R.id.id_speed2);
 
-          chart= new Chart( activity);
+        tvAmperesMax=activity.findViewById(R.id.id_max_amperes);
+        tvWattsMax=activity.findViewById(R.id.id_max_watts);
 
-
+        chart= new Chart( activity);
       }
 
       public void splitBtInfo(byte[] readBuf){
@@ -57,7 +59,7 @@ public class DataBt extends Activity {
 
               else if (parts[i].contains("s")){
                 String  strSpeed = filter('s', parts[i]);
-
+                  //uiSpeed(strSpeed);
                   break;
               }
 
@@ -65,7 +67,8 @@ public class DataBt extends Activity {
 
       }
 
-      String filter(char caracter , String parte){
+
+    String filter(char caracter , String parte){
 
           int largo =parte.length();
           for (int i = 0; i < largo; i++) {
@@ -87,9 +90,10 @@ public class DataBt extends Activity {
 
           try{
                voltage = Double.parseDouble(volt);}
-          catch (Exception E){}
 
+          catch (Exception E){
 
+          }
 
             String strVoltage = String.format(Locale.ENGLISH, "%.2f", voltage);//un decimal maximo en voltaje
 
@@ -104,7 +108,7 @@ public class DataBt extends Activity {
 
             batteryProgressBar.setProgress((int) batteryPercent);// muestra sin decimales
 
-            chart.addEntry(batteryPercent);
+            chart.addEntry(voltage);
 
 
       }
@@ -112,22 +116,56 @@ public class DataBt extends Activity {
     private void uiAmperes(String amp) {
 
         try{
+            amperes= Double.parseDouble(amp);
+        }
+        catch (Exception E){
+        }
 
-        amperes= Double.parseDouble(amp);}
 
-        catch (Exception E){}
+        if (amperes<0){ amperes = amperes*-1;} //convierte negativo a positivo
 
-            String strAmperes = String.format(Locale.ENGLISH, "%.2f", amperes);
-            tvAmperes.setText(String.format("%sA", strAmperes));
+        String strAmperes = String.format(Locale.ENGLISH, "%.2f", amperes);
+        tvAmperes.setText(String.format("%sA", strAmperes));
+        watts = amperes * voltage;
+        String strWatts = Double.toString(amperes * voltage);
+        tvWatts.setText(String.format("%sW", strWatts));
 
-             String strWatts = Double.toString(amperes * voltage);
-            tvWatts.setText(String.format("%sW", strWatts));
+        chart.addEntry2(amperes);
+
+        //MAX AMP
+        if(amperes> maxAmperes){
+            maxAmperes = amperes;
+            String strMaxAmperes = Double.toString(maxAmperes);
+            tvAmperesMax.setText(String.format("%sA", strMaxAmperes));
+
+           // tvAmperesMax.setText(String.valueOf(maxAmperes));
+        }
+
+        //MAX WATT
+        if(watts> maxWatts){
+            maxWatts = watts;
+            String strMaxWatts = String.format(Locale.ENGLISH, "%.0f", maxWatts);
+            tvWattsMax.setText(String.format("%sW", strMaxWatts));
+            //tvWattsMax.setText(String.valueOf(maxWatts));
+        }
 
     }
 
+    private void uiSpeed(String strSpeed) {
 
+        try{
+           // speed2= Double.parseDouble(strSpeed);
+        }
+        catch (Exception E){
+         //   tvspeed2.setText(String.format("%s", strSpeed + "pp"));
+        }
 
+       // String strSpeed2 = String.format(Locale.ENGLISH, "%.0f", speed2);
+        //tvspeed2.setText(String.format("%s", strSpeed2));
+        //chart.addEntry3(speed2);
 
     }
+
+}
 
 

@@ -25,6 +25,8 @@ class GpsLocation extends Activity implements IBaseGpsListener {
     int kmTotal, kmTrip, maxSpeed;
     ArrayList<Integer> valuesMedia = new ArrayList<>();
 
+    Chart chart;
+
     CLocation lastLocation;
     float lastDistance = 0;
 
@@ -32,7 +34,9 @@ class GpsLocation extends Activity implements IBaseGpsListener {
     GpsLocation(Activity activity) {
         tvKmh = activity.findViewById(R.id.id_text_speed);
         tvKmhMax = activity.findViewById(R.id.id_km_max);
+        tvAverage =activity.findViewById(R.id.id_average);
 
+        chart= new Chart( activity);
 
     }
 
@@ -47,6 +51,13 @@ class GpsLocation extends Activity implements IBaseGpsListener {
 
         //KMH VIEW
         int kmh = (int)nCurrentSpeed;
+
+        try{
+            chart.addEntry3((double) nCurrentSpeed);
+        }
+        catch (Exception ignored){
+
+        }
         tvKmh.setText(String.valueOf(kmh));
 
         //MAX SPEED
@@ -56,21 +67,23 @@ class GpsLocation extends Activity implements IBaseGpsListener {
         }
 
         //AVERAGE
-        if(kmh>1){
-            valuesMedia.add(kmh);
-            int sizeV = valuesMedia.size();
+        if(kmh>1) {
 
-            double last=0;
-            for (int i = 0; i < sizeV; i++) {
-                last = last + valuesMedia.get(i);
+                valuesMedia.add(kmh);
+                int sizeV = valuesMedia.size();
+
+                double last = 0;
+                for (int i = 0; i < sizeV; i++) {
+                    last = last + valuesMedia.get(i);
+                }
+                Double average = last / sizeV;
+
+            String strAverage = String.format(Locale.ENGLISH,"%.01f", average);
+                tvAverage.setText(strAverage);
             }
-            Double average = last / sizeV;
-
-            tvAverage.setText(String.valueOf(average));
 
         }
 
-    }
 
     @Override
     public void onLocationChanged(Location location) {

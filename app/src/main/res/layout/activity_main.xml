@@ -7,20 +7,37 @@
     tools:context=".MainActivity"
     >
 
+
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/id_chart"
-        android:layout_width="365dp"
-        android:layout_height="226dp"
+        android:layout_width="363dp"
+        android:layout_height="218dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintHorizontal_bias="0.428"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/id_text_speed"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.519">
+
+
+    </com.github.mikephil.charting.charts.LineChart>
+
+    <DigitalClock
+        android:id="@+id/digitalClock1"
+        android:layout_width="70dp"
+        android:layout_height="30dp"
+        android:layout_below="@+id/analogClock1"
+        android:layout_marginStart="160dp"
+        android:layout_marginTop="72dp"
+        android:gravity="center"
+        android:text="DigitalClock"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView6"
@@ -70,7 +87,7 @@
             android:textStyle="italic" />
 
         <TextView
-            android:id="@+id/id_km_promedio"
+            android:id="@+id/id_average"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -84,15 +101,15 @@
         android:id="@+id/id_text_speed"
         android:layout_width="190dp"
         android:layout_height="179dp"
-        android:layout_marginStart="110dp"
-        android:layout_marginTop="54dp"
+        android:layout_marginStart="112dp"
+        android:layout_marginTop="60dp"
         android:background="#00FFFFFF"
         android:gravity="bottom|center"
         android:text="@string/default_kmh"
         android:textColor="#8E8E8E"
         android:textSize="160sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/id_watts" />
+        app:layout_constraintTop_toBottomOf="@+id/id_battery_bar" />
 
     <include
         layout="@layout/tool_bar"
@@ -105,8 +122,8 @@
 
     <TextView
         android:id="@+id/id_text_volts"
-        android:layout_width="60dp"
-        android:layout_height="25dp"
+        android:layout_width="70dp"
+        android:layout_height="30dp"
         android:foregroundGravity="center"
         android:gravity="center|center_vertical"
         android:text="@string/default_voltaje"
@@ -116,8 +133,8 @@
 
     <TextView
         android:id="@+id/id_watts"
-        android:layout_width="60dp"
-        android:layout_height="25dp"
+        android:layout_width="80dp"
+        android:layout_height="30dp"
         android:gravity="center|center_horizontal|center_vertical"
         android:text="@string/default_watts"
         android:textSize="18sp"
@@ -126,8 +143,8 @@
 
     <TextView
         android:id="@+id/id_amperes"
-        android:layout_width="60dp"
-        android:layout_height="25dp"
+        android:layout_width="80dp"
+        android:layout_height="30dp"
         android:gravity="center|center_horizontal|center_vertical"
         android:text="@string/default_ampers"
         android:textSize="18sp"
@@ -137,10 +154,10 @@
     <ProgressBar
         android:id="@+id/id_battery_bar"
         style="@android:style/Widget.ProgressBar.Horizontal"
-        android:layout_width="150dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="128dp"
-        android:layout_marginTop="116dp"
+        android:layout_width="193dp"
+        android:layout_height="59dp"
+        android:layout_marginStart="104dp"
+        android:layout_marginTop="112dp"
         android:max="100"
         android:minWidth="200dip"
         android:minHeight="100dip"
@@ -152,8 +169,8 @@
 
     <TextView
         android:id="@+id/id_volt_percent"
-        android:layout_width="60dp"
-        android:layout_height="25dp"
+        android:layout_width="70dp"
+        android:layout_height="30dp"
         android:gravity="center|center_horizontal|center_vertical"
         android:text="@string/default_percent"
         android:textSize="18sp"
@@ -199,28 +216,80 @@
             android:textOn="D"
             android:textSize="36sp" />
 
+        <ImageButton
+            android:id="@+id/id_bt_horn"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/button_horn" />
+
 
     </LinearLayout>
 
     <ImageView
         android:id="@+id/id_slope"
-        android:layout_width="50dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="112dp"
+        android:layout_width="63dp"
+        android:layout_height="61dp"
+        android:layout_marginStart="168dp"
+        android:layout_marginTop="12dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/id_text_speed"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
         app:srcCompat="@drawable/angulo_bici" />
 
     <TextView
         android:id="@+id/id_pitch"
-        android:layout_width="34dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="4dp"
-        android:text="120º"
+        android:layout_width="29dp"
+        android:layout_height="21dp"
+        android:layout_marginEnd="48dp"
+        android:text="-45º"
+        app:layout_constraintEnd_toEndOf="@+id/id_slope"
+        app:layout_constraintTop_toTopOf="@+id/id_slope" />
+
+    <LinearLayout
+        android:layout_width="253dp"
+        android:layout_height="34dp"
+        android:layout_marginStart="79dp"
+        android:layout_marginTop="7dp"
+        android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/id_slope" />
+        app:layout_constraintTop_toBottomOf="@+id/id_watts">
+
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center|center_horizontal|center_vertical"
+            android:text="@string/maximum_speed"
+            android:textSize="14sp"
+            android:textStyle="italic" />
+
+        <TextView
+            android:id="@+id/id_max_amperes"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:gravity="center|center_horizontal|center_vertical"
+            android:text="@string/default_ampers"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center|center_horizontal|center_vertical"
+            android:text="@string/maximum_speed"
+            android:textSize="14sp"
+            android:textStyle="italic" />
+
+        <TextView
+            android:id="@+id/id_max_watts"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:gravity="center|center_horizontal|center_vertical"
+            android:text="@string/default_watts"
+            android:textSize="16sp" />
+
+
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

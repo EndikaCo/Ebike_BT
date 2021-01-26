@@ -10,51 +10,54 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
 public class SlopeSensor extends Activity implements SensorEventListener {
 
     //sensor
     private SensorManager mSensorManager;
-    private  Sensor accelerometer;
-    private  Sensor magnetometer;
+    private Sensor accelerometer;
+    private Sensor magnetometer;
 
-   // public TextView tvPitch;
+    // public TextView tvPitch;
     float[] mGravity;
     float[] mGeomagnetic;
     public TextView tvPitch;
     private ImageView biker;
-    float pitch,tara = 0;
+    float pitch, tara = 0;
 
-    SlopeSensor(Activity activity){
+    ArrayList<Integer> valuesMedia = new ArrayList<>();
 
-        tvPitch=activity.findViewById(R.id.id_pitch);
+    SlopeSensor(Activity activity) {
 
-        biker=activity.findViewById(R.id.id_slope);
+        tvPitch = activity.findViewById(R.id.id_pitch);
+
+        biker = activity.findViewById(R.id.id_slope);
 
         biker.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-             tara  =  pitch;
+                tara = pitch;
                 return true;
             }
         });
 
     }
 
-        public void prueba(Context context){
+    public void prueba(Context context) {
 
-            // magnetic sensor
+        // magnetic sensor
 
-            mSensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
+        mSensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
 
-            assert mSensorManager != null;
-            accelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-            magnetometer = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+        assert mSensorManager != null;
+        accelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        magnetometer = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
 
-            mSensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
-            mSensorManager.registerListener(this, magnetometer, SensorManager.SENSOR_DELAY_NORMAL);
-        }
+        mSensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_UI);
+        mSensorManager.registerListener(this, magnetometer, SensorManager.SENSOR_DELAY_UI);
+    }
 
 
     @Override
@@ -71,17 +74,27 @@ public class SlopeSensor extends Activity implements SensorEventListener {
                 float[] orientation = new float[3];
                 SensorManager.getOrientation(R, orientation);
                 float rawPitch = orientation[1]; // orientation contains: azimut, pitch and roll
-                pitch= (rawPitch*100) - tara;
-                String strPitch= String.format(Locale.ENGLISH,"%.1f", pitch);//un decimal maximo en voltaje
-                tvPitch.setText(String.format("%sº", strPitch));// convierte a string y pone V al final
-                biker.setRotation(pitch);
+                pitch = (rawPitch * 100) - tara;
+
+                if (pitch < -45) {
+                    pitch = -45;
+                } else if (pitch > 45) {
+                    pitch = 45;
+                }
+
+
+
+                    String strPitch = String.format(Locale.ENGLISH, "%.0f", pitch);//un decimal maximo en voltaje
+                    tvPitch.setText(String.format("%sº", strPitch));// convierte a string y pone V al final
+                    biker.setRotation(pitch);
+
             }
         }
     }
 
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+        @Override
+        public void onAccuracyChanged (Sensor sensor,int accuracy){
+
+        }
 
     }
-
-}

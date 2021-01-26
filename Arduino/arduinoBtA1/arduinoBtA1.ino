@@ -1,9 +1,11 @@
-
+/*
+Name:    Ebici.ino
+Author:  Endika Correia
+*/
 
 #include <SoftwareSerial.h>
 
 SoftwareSerial BT1(10, 11); // RX | TX
-
 
 const int hall_sensor = 3;
 
@@ -25,26 +27,23 @@ const int front_light = 13;
 
 const int batVoltIn = A0;
 
-const int algo = A1;
-
 const int batAmpIn = A2;
 
-const int buzzer = A3;
+const int horn = A3;
 
 
+//lights
 
-//Voltimetro
+bool blinkBackLight=LOW;
 
+
+//Strings to send via bluetooth
 
 String strvoltage;
 
 String strAmps;
 
 String strSpeed;
-
-String verific= "asdas";
-
-int i;
 
 
 //millis
@@ -56,24 +55,20 @@ unsigned long previousMillis = 0;
 unsigned long previousMillis2 = 0;
 
 
+//hall sensor
 
-//SENSOR HALL
+const float perimetre = 2.02;// 2*pi*(radio/100)
 
-const float perimetro = 2.02;// 2*pi*(radio/100)
+volatile int spinCount; // wheel spin counter
 
-volatile int contador;//contador de vueltas de rueda
+unsigned long startSpin, stopSpin;
 
-unsigned long iniciovuelta, finvuelta;
-
-float distanciaHoy = 0, recorridoAyer, tiempo, recorrido;
+float distanceToday = 0, distanceYesterday, spinTime, distance;
 
 
-void setup()
+void setup(){
 
-{
-    Serial.begin(9600);
-
-    BT1.begin(9600);
+    BT1.begin(9600);  // start bluetooth baud rate
 
     pinMode(pas, OUTPUT); // pas
 
@@ -85,25 +80,25 @@ void setup()
 
     pinMode(power1, OUTPUT); // power
 
-    pinMode(buzzer, OUTPUT); //
+    pinMode(horn, OUTPUT); //horn
+
+    digitalWrite(horn, HIGH);//OFF (Reversed relay)
 
     pinMode(back_light, OUTPUT); //
 
     pinMode(front_light, OUTPUT); //
 
+    digitalWrite(front_light, HIGH); //OFF (Reversed relay)
+
     pinMode(batVoltIn, INPUT); //
 
     pinMode(batAmpIn, INPUT); //
 
-    pinMode(algo, INPUT); //
-
     // hall
-    contador = 0;
+    ///contador = 0;
     // recorridoAyer = EEPROM.read(2);
-    recorrido = recorridoAyer;
-
+   // recorrido = recorridoAyer;
     // attachInterrupt(digitalPinToInterrupt(pas), hall, CHANGE);//interrupcion sensor hall
-
 }
 
 
@@ -112,21 +107,19 @@ void loop() {
 
     currentMillis = millis();
 
-    //velocidad();
-
     if (BT1.available()) {
 
-        recibido(BT1.read());
+        Receive(BT1.read());
 
     }
 
-    if (currentMillis - previousMillis >= 100) { //loop 0.1s
+    if (currentMillis - previousMillis >= 200) { //loop 0.1s
 
-        bateria();
+        BatteryMeasure();
 
-        sensorconsumo();
+        AmperesSensor();
 
-        velocidad();
+        SpeedHall();
 
         previousMillis = currentMillis;
 
@@ -135,9 +128,9 @@ void loop() {
 
     if (currentMillis - previousMillis2 >= 500) { //loop 0.5s
 
-        serialView();
+        BluetoothSend();
 
-        blutus();
+        BlinkBackOn();
 
         previousMillis2 = currentMillis;
 
@@ -145,55 +138,54 @@ void loop() {
 
 }
 
-void bateria() {
+void BatteryMeasure() {
 
     const double r1 = 1000000;
 
-    const double r2 = 72900;
+    const double r2 = 74800;
 
-    int readRaw = analogRead(A0);
+    int readRaw = analogRead(batVoltIn);
 
-    double vIn = (readRaw * 5) / 1023.0;
+    double vIn = (readRaw * 4.9) / 1023.0; 
 
-    // Voltage = map(vIn, fromLow, fromHigh, toLow, toHigh)
+    double Voltage = vIn / (r2 / (r1 + r2)); // voltage divider 
 
-    double Voltage = vIn / (r2 / (r1 + r2));
-
-    char str_temp[7];
+    char str_temp[7]; 
 
     dtostrf(Voltage, 2, 2, str_temp);
+
     strvoltage = String(str_temp);  // cast it to string from char 
 
 }
 
-void velocidad() {
+void SpeedHall() {
 
     const double r1 = 1000000;
 
-    const double r2 = 72900;
+    const double r2 = 74500;//7290
 
-    int readRaw = analogRead(A1);
+    int readRaw = analogRead(hall_sensor);
 
     double vIn = (readRaw * 5) / 1023.0;
 
     // Voltage = map(vIn, fromLow, fromHigh, toLow, toHigh)
 
-    double velosidad = vIn / (r2 / (r1 + r2));
+    double speed = vIn / (r2 / (r1 + r2));
 
     char str_temp[7];
 
-    dtostrf(velosidad, 2, 2, str_temp);
+    dtostrf(speed, 2, 2, str_temp);
     strSpeed = String(str_temp);  // cast it to string from char 
 }
 
 
-void sensorconsumo() {
+void AmperesSensor() {
 
-    // Amperimetro
+    // Amperimetre
 
-    int mVperAmp = 60; // See Scale Factors Below
+    int mVperAmp = 60; 
 
-    int ACSoffset = 2500; // See offsets below
+    int ACSoffset = 2500; 
 
     int RawValue = 0;
 
@@ -210,133 +202,140 @@ void sensorconsumo() {
 }
 
 
-void blutus() {
+void BluetoothSend() {
 
-
+    BT1.print("xxx");
     BT1.print("v" + strvoltage + ";");
-
     BT1.print("a" + strAmps + ";");
-
-    BT1.print("s" + strSpeed + ";");
-
-}
-
-void serialView() {
-
-    Serial.print("v:");
-    Serial.println(strvoltage);
-     Serial.print("a:");
-    Serial.println(strAmps);
-     Serial.print("s:");
-    Serial.println(strSpeed);
+   // BT1.print("s" + strSpeed + ";");
+    // BT1.print("b" + verificCode + ";");
+    BT1.print("xxx");
 }
 
 
-void pitido() {
+void StartHorn(int t) {
 
-    analogWrite(buzzer, 500);
+    digitalWrite(horn, LOW);//on
 
-    delay(100);
+    delay(t);
 
-    analogWrite(buzzer, 0);
+    digitalWrite(horn, HIGH);//off
 
 }
 
+void BlinkBackOn() {
 
-void recibido(char dat) {
+    if (blinkBackLight == HIGH) {
 
-    switch (dat)
+        if (digitalRead(back_light) == HIGH) {
+            digitalWrite(back_light, LOW);
+        }
+        else digitalWrite(back_light, HIGH);
+    }
+}
 
-    {
+
+void Receive(char dat) {
+    switch (dat) {
 
     case 'd':
 
         digitalWrite(reverse, HIGH);//DI}
-        pitido();
+        StartHorn(10);
         break;
 
     case 'r':
 
         digitalWrite(reverse, LOW);//DI}
-        pitido();
+        StartHorn(10);
         break;
 
     case 'i':
 
         digitalWrite(pas, LOW);//DI}
         digitalWrite(throttle, LOW);//DI}
-        pitido();
+        StartHorn(10);
         break;
 
     case 'o':
 
         digitalWrite(pas, HIGH);//DI}
         digitalWrite(throttle, LOW);//DI}
-        pitido();
+        StartHorn(10);
         break;
 
     case 'p':
 
         digitalWrite(throttle, HIGH);//DI}
         digitalWrite(pas, LOW);//DI}
-        pitido();
+        StartHorn(10);
         break;
 
     case 'a':
 
         digitalWrite(power1, HIGH);//DI}
-        pitido();
+        StartHorn(10);
         break;
 
     case 'b':
 
         digitalWrite(power1, LOW);//DI}
-        pitido();
+        StartHorn(10);
         break;
-
     case 'l':
 
-        digitalWrite(back_light, LOW);//DI}
-        digitalWrite(front_light, LOW);//DI}
-        pitido();
+        digitalWrite(back_light, LOW);
+        digitalWrite(front_light, HIGH);//OFF
+        StartHorn(10);
         break;
 
     case 'k':
 
-        digitalWrite(back_light, HIGH);//DI}
-        digitalWrite(front_light, LOW);//DI}
-        pitido();
+        digitalWrite(back_light, HIGH);
+        digitalWrite(front_light, HIGH);//OFF
+        StartHorn(10);
         break;
 
     case 'j':
-        digitalWrite(back_light, HIGH);//DI}
-        digitalWrite(front_light, HIGH);//DI}
-        pitido();
+        digitalWrite(back_light, HIGH);
+        digitalWrite(front_light, LOW);//ON
+        StartHorn(10);
         break;
 
+    case 'x':
+
+        blinkBackLight = HIGH;
+        break;
+
+    case 'z':
+
+        blinkBackLight = LOW;
+        break;
+
+    case 'y':
+
+        StartHorn(200);
+        break;
 
     default:
 
-        Serial.print("eneo");
         break;
 
     }
-
 }
+
 /*
+ HC-05 VERSION:3.0-20170609
 
-  LISTA COMANDOS - versión VERSION:3.0-20170609
+  38400 baud rate
 
-  38400br LAS 2
+  AT+NAME:name        <-- change name
 
-  AT                                <-- Prueba comunicación comandos AT
+  AT+PSWD:"1234"      <-- change password
 
-  AT+NAME:nombre       <-- Cambia el nombre
+  AT+UART:9600,0,0    <-- change baud rate
 
-  AT+PSWD:"1234"       <-- Modifica pin de emparejamiento en este caso 1234
-
-  AT+UART:9600,0,0    <-- Selecciona el baudRate, en este caso el 4 que es 9600
-
+  AT+CMODE=1          <-- change modes
 
 
   Most useful AT commands are
@@ -359,11 +358,8 @@ void recibido(char dat) {
 
   AT+PSWD: see default password
 
+  AT+CMODE : connection mode(0 Especific 1 General) 
 
-  Saber modo de Conexión: AT+CMODE (0 Especifico 1 General)
-
-  A cualquier dispositivo: AT+CMODE=1
-
-  saber direccion mac al que se empareja AT+BIND
+  AT+BIND : paired device address 
 
 */

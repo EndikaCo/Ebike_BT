@@ -5,6 +5,8 @@
     tools:context=".MainActivity"
     >
 
+
+
     <item
         android:id="@+id/menu_theme_button"
         android:icon="@drawable/ic_sun"

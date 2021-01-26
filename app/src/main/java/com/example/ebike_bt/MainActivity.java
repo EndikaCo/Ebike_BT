@@ -12,6 +12,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -19,6 +20,8 @@ import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -27,7 +30,7 @@ import android.widget.ToggleButton;
 public class MainActivity extends AppCompatActivity {
 
     ToggleButton gearSelector;
-    ImageButton lightSelector, powerSelector , ThrottleSelector;
+    ImageButton btHorn,lightSelector, powerSelector , ThrottleSelector;
     int state_throttle, state_light=0, state_power;
 
     //toolbar
@@ -49,20 +52,22 @@ public class MainActivity extends AppCompatActivity {
     DataBt bikeInfo;
     SlopeSensor slope;
     GpsLocation gpsact;
-
+    Chart chart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);      //screen vertical
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.activity_main);
 
         findViews();
 
         bluetoothadapter =BluetoothAdapter.getDefaultAdapter();
-
         setSupportActionBar(myToolbar);
-
         theHandler();
 
         service = new MyBluetoothService(handler);
@@ -82,6 +87,15 @@ public class MainActivity extends AppCompatActivity {
         gpsact = new GpsLocation(MainActivity.this);
 
         requestPermissions();
+
+        enableButtons(false);
+
+        chart= new Chart( this);
+        chart.addEntry(0.00);
+        chart.addEntry2(0.00);
+        chart.addEntry3(0.00);
+        chart.addEntry3(2.00);chart.addEntry3(30.00);
+
     }
 
     public void requestPermissions(){
@@ -122,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
         powerSelector.setEnabled(e);
         lightSelector.setEnabled(e);
         ThrottleSelector.setEnabled(e);
+        btHorn.setEnabled(e);
     }
 
     private void buttons() {
@@ -218,6 +233,16 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        ////////////////////////////////////////////////////////////////////////////////////////////horn
+        btHorn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendData("y");//pass off th off
+            }
+
+    });
+
     }
 
     private void sendData(String data){
@@ -234,7 +259,7 @@ public class MainActivity extends AppCompatActivity {
         lightSelector =findViewById(R.id.id_light_button);
         ThrottleSelector=findViewById(R.id.id_throttle);
         powerSelector=findViewById(R.id.id_power_selector);
-
+        btHorn =findViewById(R.id.id_bt_horn);
     }
 
     @SuppressLint("HandlerLeak")                                                                    //HANDLER
@@ -297,11 +322,14 @@ public class MainActivity extends AppCompatActivity {
         if(status==R.string.title_connected) {
 
             myToolbar.setTitle(mConnectedDeviceName);
+            enableButtons(true);
         }
 
         if(status==R.string.title_not_connected) {
 
             myToolbar.setTitle("not connected");
+
+            enableButtons(false);
         }
 
     }
